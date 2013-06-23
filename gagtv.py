@@ -39,6 +39,14 @@ class GagTV(object):
         url = Urls.CURRENT_PLAYLIST
         return self.scraper.getJson(url)
 
+    def getArchivedVideos(self, pid):
+        url = Urls.ARCHIVED_PLAYLIST.format(pid)
+        return self.scraper.getJson(url)
+
+    def getArchives(self):
+        url = Urls.ARCHIVED
+        return self.scraper.getJson(url)
+
     def _fetchItems(self, url, key):
         items = self.scraper.getJson(url)
         return items[key] if items else []
@@ -51,6 +59,7 @@ class Urls(object):
     '''
     API_BASE = 'http://d1nmj8esheg8s6.cloudfront.net/api/'
     CURRENT_PLAYLIST = API_BASE + 'playlist'
+    ARCHIVED = API_BASE + 'playlist/archive'
     ARCHIVED_PLAYLIST = API_BASE + 'playlist/archive/{0}'
 
 class Keys(object):
@@ -59,6 +68,7 @@ class Keys(object):
     string-constants
     '''
 
+    PLAYLIST_ID = 'pid'
     THUMBNAIL = 'thumbnail_url'
     TITLE = 'title'
     USER_AGENT = 'User-Agent'

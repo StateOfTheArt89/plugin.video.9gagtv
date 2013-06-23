@@ -10,10 +10,10 @@ import sys
 ITEMS_PER_PAGE = 20
 LINE_LENGTH = 60
 
-PLUGIN_NAME = '9Gag TV'
+PLUGIN_NAME = '9GAG TV'
 PLUGIN_ID = 'plugin.video.9gagtv'
 PLUGIN = Plugin(PLUGIN_NAME, PLUGIN_ID, __file__)
-CONVERTER = JsonListItemConverter(PLUGIN, LINE_LENGTH)
+CONVERTER = JsonListItemConverter(PLUGIN)
 GAGTV = GagTV()
 
 
@@ -37,11 +37,17 @@ def createListOfTodaysVideos():
     return [CONVERTER.convertVideoToListItem(element)
             for element in videos]
 
-@PLUGIN.route('/createListOfArchives/')
-def createListOfArchives():
-    videos = None # TODO!
+@PLUGIN.route('/createListOfArchivedVideos/<pid>/')
+def createListOfArchivedVideos(pid):
+    videos = GAGTV.getArchivedVideos(pid)
     return [CONVERTER.convertVideoToListItem(element)
             for element in videos]
+
+@PLUGIN.route('/createListOfArchives/')
+def createListOfArchives():
+    archives = GAGTV.getArchives()
+    return [CONVERTER.convertArchiveToListItem(element)
+            for element in archives]
 
 @PLUGIN.route('/playVideo/<videoId>/')
 def playVideo(videoId):

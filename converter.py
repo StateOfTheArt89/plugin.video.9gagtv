@@ -4,7 +4,7 @@ from gagtv import GagTV, Keys, GagException
 
 class JsonListItemConverter(object):
 
-    def __init__(self, PLUGIN, title_length):
+    def __init__(self, PLUGIN):
         self.plugin = PLUGIN
 
     def convertVideoToListItem(self, video):
@@ -18,3 +18,10 @@ class JsonListItemConverter(object):
                 'is_playable': True,
                 }
 
+    def convertArchiveToListItem(self, archive):
+        name = archive[Keys.TITLE].encode('utf-8')
+        playlistId = archive[Keys.PLAYLIST_ID].encode('utf-8')
+        return {
+                'label': name,
+                'path': self.plugin.url_for('createListOfArchivedVideos', pid = playlistId),
+                }
